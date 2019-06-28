@@ -12,7 +12,6 @@ import Appointment from '../models/Appointment';
 
 class AvailableController {
   async index(req, res) {
-
     const { date } = req.query;
 
     if (!date) {
