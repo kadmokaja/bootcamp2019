@@ -1,12 +1,21 @@
 import { Router } from 'express';
+import multer from 'multer';
+import multerConfig from './config/multer';
+import UserController from './app/controllers/UserController';
+import SessionController from './app/controllers/SessionController';
+import FileController from './app/controllers/FileController';
+
+import authMiddleware from './app/middlewares/auth';
 
 const routes = new Router();
+const upload = multer(multerConfig);
 
-let numberOfRequests = 0;
-const projects = [];
+routes.post('/users', UserController.store);
 
-routes.post('/projects', ProviderController.store);
-routes.get('/projects', ProviderController.index);
-routes.put('/projects/:id', ProviderController.update);
-routes.delete('/projects/:id', ProviderController.delete);
-routes.post('/projects/:id/tasks', TaskController.store);
+routes.post('/sessions', SessionController.store);
+
+routes.use(authMiddleware);
+routes.put('/users', UserController.update);
+routes.post('/files', upload.single('file'), FileController.store);
+
+export default routes;
