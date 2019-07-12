@@ -16,8 +16,8 @@ class User extends Model {
       }
     );
 
-    this.addHook('beforeSave', async (user) => {
-      if(user.password) { 
+    this.addHook('beforeSave', async user => {
+      if (user.password) {
         user.password_hash = await bcrypt.hash(user.password, 8);
       }
     });
@@ -32,7 +32,6 @@ class User extends Model {
   checkPassword(password) {
     return bcrypt.compare(password, this.password_hash);
   }
-
 }
 
 export default User;
