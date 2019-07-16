@@ -1,107 +1,44 @@
-import React from "react";
+import React, { Component } from "react";
 import { MdAddShoppingCart } from "react-icons/md";
 
 import { ProductList } from "./styles";
+import api from "../../services/api";
+import { formatPrice } from "../../util/format";
 
-export default function Home() {
-  return (
-    <ProductList>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-nike-kyrie-flytrap-ii-masculino/20/HZM-1289-120/HZM-1289-120_detalhe2.jpg?resize=326:*"
-          alt="Tenis"
-        />
-        <strong>Tênis Nike Kyrie</strong>
-        <span>R$229,90</span>
+class Home extends Component {
+  state = {
+    products: []
+  };
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" /> 3
-          </div>
+  async componentDidMount() {
+    const response = await api.get("products");
 
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-nike-kyrie-flytrap-ii-masculino/20/HZM-1289-120/HZM-1289-120_detalhe2.jpg?resize=326:*"
-          alt="Tenis"
-        />
-        <strong>Tênis Nike Kyrie</strong>
-        <span>R$229,90</span>
+    this.setState({ products: response.data });
+  }
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" /> 3
-          </div>
+  render() {
+    const { products } = this.state;
 
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-nike-kyrie-flytrap-ii-masculino/20/HZM-1289-120/HZM-1289-120_detalhe2.jpg?resize=326:*"
-          alt="Tenis"
-        />
-        <strong>Tênis Nike Kyrie</strong>
-        <span>R$229,90</span>
+    return (
+      <ProductList>
+        {products.map(product => (
+          <li key={product.id}>
+            <img src={product.image} alt={product.title} />
+            <strong>{product.title}</strong>
+            <span>{formatPrice(product.price)}</span>
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" /> 3
-          </div>
+            <button type="button">
+              <div>
+                <MdAddShoppingCart size={16} color="#FFF" /> 3
+              </div>
 
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-nike-kyrie-flytrap-ii-masculino/20/HZM-1289-120/HZM-1289-120_detalhe2.jpg?resize=326:*"
-          alt="Tenis"
-        />
-        <strong>Tênis Nike Kyrie</strong>
-        <span>R$229,90</span>
-
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" /> 3
-          </div>
-
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-nike-kyrie-flytrap-ii-masculino/20/HZM-1289-120/HZM-1289-120_detalhe2.jpg?resize=326:*"
-          alt="Tenis"
-        />
-        <strong>Tênis Nike Kyrie</strong>
-        <span>R$229,90</span>
-
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" /> 3
-          </div>
-
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-nike-kyrie-flytrap-ii-masculino/20/HZM-1289-120/HZM-1289-120_detalhe2.jpg?resize=326:*"
-          alt="Tenis"
-        />
-        <strong>Tênis Nike Kyrie</strong>
-        <span>R$229,90</span>
-
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" /> 3
-          </div>
-
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-    </ProductList>
-  );
+              <span>ADICIONAR AO CARRINHO</span>
+            </button>
+          </li>
+        ))}
+      </ProductList>
+    );
+  }
 }
+
+export default Home;
